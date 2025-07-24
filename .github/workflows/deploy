@@ -17,5 +17,22 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./  # Root folder with your HTML/CSS/JS
-          
-  
+
+
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Your Portfolio is Live!"
+          to: kethanraii@gmail.com
+          from: GitHub Actions <kethanraiii@gmail.com>
+          body: |
+            ✅ Your portfolio has been deployed!
+            🔗 View it here: https://<your-username>.github.io/<your-repo-name>/
